@@ -1,4 +1,5 @@
-#Job Portal Web Application
+Job Portal Web Application
+
 A full-stack Job Portal Web Application built using Node.js, Express.js, MongoDB, and EJS, featuring user authentication, protected routes, job listings, and a clean professional UI.
 This project is designed to simulate a real-world job portal used by job seekers and recruiters.
 
