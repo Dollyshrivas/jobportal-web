@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Apply Job</title>
+
+</head>
+<body>
+  <style>
+
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .container{
+      margin-left: 400px;
+      margin-top: 20px;
+      max-width: 700px;
+      
+      
+    }
+
+    h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  padding-top: 20px;
+  color: #333;
+  display: flex;
+  justify-content: center;
+}
+
+    .apply-job-card{
+      background-color: rgb(182, 194, 247);
+      border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    strong{
+      font-size: 25px;
+    }
+
+    p{
+      font-size: large;
+      padding-top: 10px;
+    }
+    
+
+    .apply-btn{
+      padding: 10px;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: rgb(19, 27, 240);
+  font-family:'Times New Roman', Times, serif;
+    }
+
+  </style>
+  <div class="container">
+    <h1>Apply job here</h2>
+        <% jobs.forEach(job => {%>
+    <div action="/applyjob" method="POST" class="apply-job-card">
+      
+        <p class="text"><strong>Name </strong><%= job.Name %></p>
+        <p class="text"><strong>Role </strong><%= job.Role %></p>
+        <p class="text"><strong>Location </strong><%= job.Location %></p>
+
+          <!-- APPLY BUTTON -->
+          <form action="/applybutton" method="GET" class="formsubmit">
+  <button type="submit" class="apply-btn">Apply</button>
+</form>
+        
+      </div>
+      <%})%>
+  </div>
+
+
+</body>
+</html>

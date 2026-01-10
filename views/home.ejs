@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job App</title>
+    <style>
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color:rgb(255, 255, 255)
+        }
+/* navbar style */
+        .navbar {
+            width: 100%;
+            height: 70px;
+            background: #3873fd;
+            padding: 0 50px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ededee;
+            text-decoration: none;
+            padding-top: 15px;
+            
+        }
+
+        
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  display: inline-block;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+.nav-apply{
+  color: #ffffff;
+  font-size: 16px;
+  text-decoration: none;
+  
+}
+
+
+
+        /* form style*/
+
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.title {
+  margin: 20px 0;
+  color: #333;
+}
+
+.job-form {
+  display:grid;
+  gap: 12px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.job-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.job-form input:focus {
+  outline: none;
+  border-color: #007bff;
+  
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.update-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  margin-top: 8px;
+}
+
+.job-card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+a{
+  font-size: 20px;
+  font-weight: bold;
+}
+/*
+.user-dropdown {
+  position: relative;
+}
+
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: #fff;
+  min-width: 120px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+}
+
+
+.user-dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  list-style: none;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background: #f2f2f2;
+}
+  */
+
+
+
+    </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+  <a class="navbar-brand" href="/">Job App</a>
+  <ul class="nav-links">
+      <li>
+        <a class="nav-apply" href="/applyjob">Apply</a>
+        <!--
+        <li class="user-dropdown">
+  <a href="#" class="user-name">User ▾</a>
+  <ul class="dropdown-menu">
+    <li><a href="/logout">Logout</a></li>
+  </ul>
+</li>
+-->
+
+<li>
+  <a class="nav-login" href="/loginpage">Login</a>
+</li>
+
+    </ul>
+</div>
+</nav>
+
+<div class="container">
+  <h2 class="title">Add New Job</h2>
+<form action="/jobs" method="POST" class="job-form">
+  <input type="text" name="Name" placeholder="Name" required>
+  <input type="text" name="Role" placeholder="Role" required>
+  <input type="text" name="Location" placeholder="Location" required>
+  <button type="submit" class="btn add-btn">Add</button>
+</form>
+
+
+<% jobs.forEach(job => {%>
+  <div class="job-card">
+  <form action="/jobs/update/<%= job.id%>" method="POST" class="job-form">
+    <input type="text" name="Name" value="<%=job.Name%>">
+    <input type="text" name="Role" placeholder="<%= job.Role%>">
+    <input type="text" name="Location" placeholder="<%= job.Location%>">
+
+    <div class="action-buttons"></div>
+    <button type="submit" class="btn update-btn">Update</button>
+  </div>
+  </form>
+  <form action="/jobs/delete/<%=job.id%>" method="POST">
+    <button type="submit" class="btn delete-btn">Delete</button>
+  </form>
+</div>
+<%})%>
+</div>
+
+
+</body>
+</html>

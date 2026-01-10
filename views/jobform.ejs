@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applying for job</title>
+    <style>
+      
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e3f2fd, #f4f6f8);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+form {
+  background: #ffffff;
+  padding: 30px;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+
+input {
+  width: 100%;
+  padding: 11px 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+
+input:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+
+button[type="submit"] {
+  width: 100%;
+  padding: 13px;
+  background: #4a90e2;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+button[type="submit"]:hover {
+  background: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
+}
+
+.applyform-container{
+  
+  height: 700px;
+  width: 700px;
+  padding-top: 100px;
+  margin-left: 300px;
+
+}
+
+h2{
+  display: flex;
+  padding-left: 150px;
+  padding-bottom: 10px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="applyform-container">
+      <h2>Apply for</h2>
+
+<form action="/applyform" method="POST">
+
+  <div class="form-name">
+    <label>Name</label>
+  <input type="text" name="Name" required>
+  </div>
+
+  <div class="form-skill">
+    <label>Skills</label>
+  <input type="text" name="Skills" required>
+  </div>
+
+  <div class="form-phonenumber">
+    <label>Phone Number</label>
+  <input type="text" name="Phonenumber" required>
+  </div>
+
+  <div class="form-location">
+    <label>Location</label>
+  <input type="text" name="Location" required>
+  </div>
+
+  <div class="form-submit">
+    <button type="submit">Submit Application</button>
+</form>
+  </div>
+    </div>
+
+</body>
+</html>
