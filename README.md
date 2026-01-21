@@ -15,7 +15,8 @@ This project is designed to simulate a real-world job portal used by job seekers
 
    ```env
    PORT=5000
-   DB_URI=mongodb+srv://dolly:12345@cluster0.djql9u2.mongodb.net/erpsystem?retryWrites=true&w=majority
+   DB_URI = mongodb://localhost:27017/jobportaljob
+   COOKIE_SECRET = "secret"
    ```
 
 3. **Run the application**
