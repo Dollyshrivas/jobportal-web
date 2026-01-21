@@ -1,7 +1,37 @@
-Job Portal Web Application
+**Job Portal Web Application**
 
 A full-stack Job Portal Web Application built using Node.js, Express.js, MongoDB, and EJS, featuring user authentication, protected routes, job listings, and a clean professional UI.
 This project is designed to simulate a real-world job portal used by job seekers and recruiters.
+
+## ⚙️ Installation & Setup
+
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment variables**
+
+   ```env
+   PORT=5000
+   DB_URI=mongodb+srv://dolly:12345@cluster0.djql9u2.mongodb.net/erpsystem?retryWrites=true&w=majority
+   ```
+
+3. **Run the application**
+
+   ```bash
+   npm start
+   ```
+
+4. Open in browser:
+
+   ```
+   http://localhost:3000
+   ```
+
+---
+
 
 ✨ Features
 Authentication
