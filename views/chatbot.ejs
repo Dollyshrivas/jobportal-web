@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Chatbot</title>
+  <%- include('partials/site_head') %>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      background: #f2f5fb;
+      margin: 0;
+      padding: 12px 0 24px;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #f7f9fc;
+      width: 100%;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: calc(100vh - 120px);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #102a43;
+    }
+
+    .chat-window {
+      flex: 1 1 auto;
+      min-height: 180px;
+      overflow-y: auto;
+      padding: 14px;
+      border: 1px solid #dde3ec;
+      border-radius: 14px;
+      background: #f7f9fc;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-message {
+      max-width: 85%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .chat-message.user {
+      align-self: flex-end;
+      background: #0f5ca8;
+      color: #fff;
+    }
+
+    .chat-message.bot {
+      align-self: flex-start;
+      background: #e9effc;
+      color: #102a43;
+    }
+
+    .chat-message.loading {
+      opacity: 0.8;
+      font-style: italic;
+    }
+
+    .chat-form {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .chat-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: 1px solid #d3dae8;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .chat-input {
+      flex: 1 1 auto;
+    }
+
+    .chat-input:focus {
+      border-color: #4f7df7;
+      box-shadow: 0 0 0 3px rgba(79, 125, 247, 0.12);
+    }
+
+    .chat-submit {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 999px;
+      background: #0f5ca8;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      .chat-container {
+        padding: 16px;
+        border-radius: 12px;
+      }
+
+      .chat-window {
+        min-height: 220px;
+        padding: 10px;
+      }
+
+      .chat-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .chat-input {
+        border-radius: 999px;
+        padding: 12px 14px;
+      }
+
+      .chat-submit {
+        width: 100%;
+        border-radius: 12px;
+        padding: 10px 14px;
+      }
+    }
+
+    .chat-submit:hover {
+      background: #0b4d8f;
+    }
+  </style>
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" style="color:#0f5ca8; font-weight:700; text-decoration:none;">← Home</a>
+    <a href="/chatbot" style="color:#102a43; text-decoration:none;">Chatbot</a>
+  </nav>
+  <div class="chat-container">
+    <h1>Chatbot</h1>
+    <div id="chat-window" class="chat-window"></div>
+    <form id="chat-form" class="chat-form">
+      <input
+        id="message-input"
+        name="message"
+        class="chat-input"
+        placeholder="Ask the chatbot..."
+        autocomplete="off"
+        required
+      />
+      <button type="submit" class="chat-submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('message-input');
+    const chatWindow = document.getElementById('chat-window');
+    // suggestions container appended beneath the chat window
+    const suggestionsContainer = document.createElement('div');
+    suggestionsContainer.style.display = 'flex';
+    suggestionsContainer.style.flexWrap = 'wrap';
+    suggestionsContainer.style.gap = '8px';
+    suggestionsContainer.style.marginTop = '8px';
+    chatWindow.parentNode.insertBefore(suggestionsContainer, chatWindow.nextSibling);
+
+    function appendMessage(text, role) {
+      const messageEl = document.createElement('div');
+      messageEl.className = `chat-message ${role}`;
+      messageEl.textContent = text;
+      chatWindow.appendChild(messageEl);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+      return messageEl;
+    }
+
+    function renderSuggestions(suggestions) {
+      suggestionsContainer.innerHTML = '';
+      if (!suggestions || !suggestions.length) return;
+      suggestions.forEach((s) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = s;
+        btn.style.padding = '8px 12px';
+        btn.style.borderRadius = '999px';
+        btn.style.border = '1px solid #d3dae8';
+        btn.style.background = '#fff';
+        btn.style.cursor = 'pointer';
+        btn.addEventListener('click', () => {
+          input.value = s;
+          input.focus();
+        });
+        suggestionsContainer.appendChild(btn);
+      });
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendMessage(message, 'user');
+      input.value = '';
+      const loadingEl = appendMessage('Typing...', 'bot loading');
+
+      try {
+        const response = await fetch('/chatbot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message }),
+        });
+
+        const data = await response.json();
+        loadingEl.remove();
+
+        if (response.ok && data.reply) {
+          appendMessage(data.reply, 'bot');
+          renderSuggestions(data.suggestions || []);
+        } else {
+          appendMessage(data.error || 'Unable to get a response.', 'bot');
+          renderSuggestions([]);
+        }
+      } catch (error) {
+        loadingEl.remove();
+        appendMessage('Error connecting to chatbot.', 'bot');
+      }
+    });
+  </script>
+</body>
+</html>

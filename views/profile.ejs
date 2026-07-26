@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+  <%- include('partials/site_head') %>
+  <style>
+
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            
+        }
+
+        body{
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          background:linear-gradient(135deg, #16a7f5, #a6ddfa)
+        }
+        
+        
+
+    .profile-box {
+      width: min(100%, 400px);
+      max-width: 100%;
+      margin: 48px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .profile-box h2 {
+      margin-bottom: 10px;
+    }
+    .logout {
+      margin-top: 15px;
+      display: inline-block;
+      padding: 8px 15px;
+      background: crimson;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    /* navbar style */
+        .navbar {
+            width: 100%;
+            height: 70px;
+            background: #03045E;
+            padding: 0 50px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ededee;
+            text-decoration: none;
+            padding-top: 15px;
+            
+        }
+
+        
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  display: inline-block;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+.nav-apply,
+.nav-apply:visited,
+.nav-apply:active,
+.nav-apply:focus,
+.nav-links a:visited,
+.nav-links a:active,
+.nav-links a:focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.nav-apply{
+  color: #ffffff;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: bold;
+  
+}
+
+/* DROPDOWN MENU */
+.dropdown-menu {
+  position: absolute;
+  top: 38px;
+  right: 0;
+  background: white;
+  min-width: 150px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: none;
+  z-index: 10;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 10px 15px;
+  color: #111;
+}
+
+.dropdown-menu li a:hover {
+  background: #f3f4f6;
+}
+
+/* SHOW ON hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/*footer*/
+.footer {
+  background: #1f2933;
+  color: #e5e7eb;
+  margin-top: 2.5rem;
+  padding-top: 40px;
+  margin-bottom: 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.footer-section p {
+  font-size: 14px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-section ul li a:hover {
+  color: #60a5fa;
+}
+
+.footer-bottom {
+  margin-top: 30px;
+  padding: 15px 0;
+  text-align: center;
+  background: #111827;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+    .dashboard-shell {
+      max-width: 1180px;
+      margin: 28px auto 40px;
+      padding: 0 24px;
+    }
+
+    .hero-panel {
+      background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 28px;
+      padding: 34px 38px;
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 30px;
+      align-items: center;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+    }
+
+    .hero-panel h1 {
+      font-size: clamp(2rem, 2.5vw, 2.6rem);
+      margin-bottom: 14px;
+      line-height: 1.05;
+    }
+
+    .hero-panel p {
+      color: #475569;
+      line-height: 1.8;
+      font-size: 1rem;
+      max-width: 540px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .summary-card {
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 120px;
+    }
+
+    .summary-card strong {
+      font-size: 1.8rem;
+      color: #0f172a;
+    }
+
+    .summary-card span {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    .applications-section {
+      margin-top: 32px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      color: #0f172a;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: #64748b;
+      font-size: 0.96rem;
+    }
+
+    .applications-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .application-card {
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 20px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: start;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.04);
+    }
+
+    .application-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      color: #0f172a;
+    }
+
+    .application-details {
+      display: grid;
+      gap: 10px;
+      color: #475569;
+      line-height: 1.75;
+      font-size: 0.97rem;
+    }
+
+    .badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      color: #1d4ed8;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .empty-state {
+      background: #f8fafc;
+      border: 1px dashed rgba(100, 116, 139, 0.4);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+      color: #334155;
+    }
+
+    .empty-state h3 {
+      margin-bottom: 10px;
+      font-size: 1.15rem;
+    }
+
+    .empty-state p {
+      margin: 0;
+      line-height: 1.8;
+      color: #64748b;
+    }
+
+    footer {
+      margin-top: 48px;
+      padding: 30px 24px 18px;
+      max-width: 1180px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      background: #0f172a;
+      color: #cbd5e1;
+      border-radius: 24px;
+      padding: 30px;
+    }
+
+    .footer-inner h3,
+    .footer-inner h4 {
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .footer-inner a {
+      color: #cbd5e1;
+      text-decoration: none;
+    }
+
+    .footer-bottom {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.92rem;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 900px) {
+      .hero-panel { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .application-card { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-container { padding: 0 18px; }
+      .dashboard-shell { margin: 20px auto 40px; padding: 0 18px; }
+      .hero-panel { padding: 28px 22px; }
+    }
+
+   
+  </style>
+</head>
+<body>
+
+  <% if (success.length > 0) { %>
+    <div class="flash success"><%= success[0] %></div>
+  <% } %>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a class="navbar-brand" href="/">JobPortal</a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/applyjob">Browse Jobs</a></li>
+        <li><a href="/createjob">Post Job</a></li>
+        <li class="dropdown">
+          <a class="nav-apply" href="/profilepage"><%= user.name %> ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="dashboard-shell">
+    <div class="hero-panel">
+      <div>
+        <p style="color:#2563eb;font-weight:700;margin-bottom:14px;letter-spacing:0.08em;text-transform:uppercase;font-size:0.82rem;">Profile Overview</p>
+        <h1>Welcome back, <%= user.name %>.</h1>
+        <p>Track your application progress and return to your most recent roles with confidence. This dashboard highlights the jobs you've applied to and keeps your career momentum visible.</p>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <strong><%= applications ? applications.length : 0 %></strong>
+            <span>Applications submitted</span>
+          </div>
+          <div class="summary-card">
+            <strong><%= user.name %></strong>
+            <span>Registered email</span>
+          </div>
+          <div class="summary-card">
+            <strong><%= applications && applications.length ? new Date(applications[0].createdAt).toLocaleDateString() : '–' %></strong>
+            <span>Last application date</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:center;align-items:center;min-height:220px;">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80" alt="Profile illustration" style="width:100%;border-radius:24px;object-fit:cover;max-height:320px;" />
+      </div>
+    </div>
+
+    <div class="applications-section">
+      <div class="section-header">
+        <div>
+          <h2>Your applied jobs</h2>
+          <p>Review all roles you've applied to so far and revisit any listing with a single click.</p>
+        </div>
+        <div class="status-pill"><%= applications && applications.length ? 'Applications active' : 'No applications yet' %></div>
+      </div>
+
+      <% if (applications && applications.length > 0) { %>
+        <div class="applications-list">
+          <% applications.forEach(application => { %>
+            <article class="application-card">
+              <div>
+                <h3><%= application.jobId ? application.jobId.Name : 'Unknown position' %></h3>
+                <div class="application-details">
+                  <div><strong>Role:</strong> <%= application.jobId ? application.jobId.Role : 'N/A' %></div>
+                  <div><strong>Location:</strong> <%= application.jobId ? application.jobId.Location : application.Location %></div>
+                  <div><strong>Submitted:</strong> <%= new Date(application.createdAt).toLocaleDateString() %></div>
+                  <div><strong>Contact:</strong> <%= application.Phonenumber %></div>
+                </div>
+                <div class="badge-group">
+                  <span class="badge"><%= application.Skills %></span>
+                  <span class="badge"><%= application.jobId ? application.jobId.Role : 'Application' %></span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+                <span class="status-pill">Submitted</span>
+                <% if (application.jobId) { %>
+                  <a href="/apply/<%= application.jobId._id %>" class="btn btn-secondary" style="padding:10px 18px;border-radius:12px;border:1px solid rgba(15,23,42,0.1);background:#f8fafc;color:#0f172a;text-decoration:none;">View job</a>
+                <% } %>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">
+          <h3>No applied jobs yet</h3>
+          <p>You haven’t submitted any applications yet. Visit the Browse Jobs page to find opportunities that match your experience.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <h3>JobPortal</h3>
+        <p>Your career dashboard for applied positions and professional progress.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <p><a href="/">Home</a></p>
+        <p><a href="/applyjob">Browse Jobs</a></p>
+        <p><a href="/createjob">Post Job</a></p>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <p>Email: support@jobapp.com</p>
+        <p>Phone: +91 9971018840</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 JobPortal | All Rights Reserved</div>
+  </footer>
+</body>
+</html>

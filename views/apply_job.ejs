@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Browse Jobs</title>
+  <%- include('partials/site_head') %>
+  <style>
+    .navbar {
+      width: 100%;
+      background: var(--nav);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 70px;
+    }
+
+    .nav-links { list-style: none; display: flex; gap: 16px; align-items: center; }
+    .nav-links a { color: #fff; text-decoration: none; padding: 10px 14px; border-radius: 10px; transition: background 180ms ease; }
+    .nav-links a:hover { background: rgba(255,255,255,0.12); }
+
+    .hero-section {
+      background: linear-gradient(135deg, rgba(37,99,235,0.14), rgba(255,255,255,0.85));
+      padding: 44px 24px 36px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(15,23,42,0.08);
+    }
+
+    .hero-copy { max-width: 900px; margin: 0 auto; }
+    .hero-copy h1 { font-size: clamp(2rem, 3vw, 2.6rem); margin-bottom: 14px; line-height: 1.05; }
+    .hero-copy p { color: var(--muted); font-size: 1rem; line-height: 1.8; margin-bottom: 22px; }
+    .hero-copy .hero-note { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(37,99,235,0.12); color: var(--accent); font-size: 0.85rem; letter-spacing: 0.02em; }
+
+    .page-content { max-width: 1180px; margin: 0 auto 42px; padding: 0 24px; display: grid; gap: 24px; }
+    .section-title { font-size: 1.25rem; margin-bottom: 10px; }
+    .job-count { color: var(--muted); margin-bottom: 8px; }
+
+    .job-cards { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .job-card { background:#fff;box-shadow:var(--shadow);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;gap:16px;transition:transform 180ms ease,box-shadow 180ms ease; }
+    .job-card:hover { transform: translateY(-3px);box-shadow:0 18px 32px rgba(2,6,23,0.1); }
+    .job-card h2 { margin: 0; font-size: 1.12rem; color: #0f172a; }
+    .job-card p { margin:0;color:var(--muted);line-height:1.75; }
+    .job-meta { display:flex;flex-wrap:wrap;gap:10px;color:var(--accent);font-weight:600; }
+    .job-badge { background: rgba(37,99,235,0.1); padding:6px 10px; border-radius:999px; font-size:0.92rem; }
+    .job-actions { display:flex;gap:12px;flex-wrap:wrap;margin-top:auto; }
+    .btn-secondary { border:1px solid rgba(15,23,42,0.08); color:var(--muted); background:#fff; }
+
+    .insight-panel { background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px; }
+    .insight-panel h2 { margin:0 0 12px; font-size:1.15rem; }
+    .insight-panel p { color: var(--muted); line-height:1.8; margin-bottom:18px; }
+    .insight-panel ul { list-style: disc inside; color: var(--muted); line-height:1.9; }
+
+    @media (max-width: 720px) {
+      .nav-container { padding: 0 18px; }
+      .hero-copy { text-align:center; }
+      .job-actions { flex-direction:column; align-items:stretch; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a class="navbar-brand" href="/">
+        <span class="brand-mark"></span>
+        <span class="brand-text">JobPortal</span>
+      </a>
+      <ul class="nav-links">
+        <% if (user) { %>
+          <li><a href="/createjob">Post Job</a></li>
+          <li><a href="/logout">Logout</a></li>
+        <% } else { %>
+          <li><a href="/loginpage">Login</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero-section">
+    <div class="hero-copy">
+      <span class="hero-note">Browse jobs, apply with confidence</span>
+      <h1>Discover new opportunities that match your professional strengths.</h1>
+      <p>Explore current openings curated from our active listings. Each role is presented with clear location, title, and application access so you can move from interest to action quickly.</p>
+    </div>
+  </section>
+
+  <main class="page-content">
+    <section>
+      <div class="section-title">Available roles</div>
+      <div class="job-count"><%= jobs.length %> active openings at a glance</div>
+      <div class="job-cards">
+        <% jobs.forEach(job => { %>
+          <article class="job-card">
+            <div class="job-meta">
+              <span class="job-badge"><%= job.Role %></span>
+              <span class="job-badge"><%= job.Location %></span>
+            </div>
+            <h2><%= job.Name %></h2>
+            <p>Designed for candidates seeking meaningful work in strong teams. Review the role and click apply to begin your submission.</p>
+            <div class="job-actions">
+              <form action="/applybutton" method="GET" style="margin:0">
+                <input type="hidden" name="jobId" value="<%= job._id %>">
+                <button type="submit" class="btn btn-primary">Apply now</button>
+              
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="insight-panel">
+      <h2>Why browse jobs here?</h2>
+      <p>Our portal is built for clarity and efficiency — job seekers can compare roles, see location details, and apply directly without navigating through multiple pages.</p>
+      <ul>
+        <li>Streamlined application workflow for every opening.</li>
+        <li>Clear role descriptions and location badges.</li>
+        <li>Professional presentation that builds trust with employers.</li>
+      </ul>
+    </section>
+  </main>
+
+  <%- include('partials/chat_widget') %>
+</body>
+</html>

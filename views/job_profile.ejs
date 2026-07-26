@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Job App</title>
+  <%- include('partials/site_head') %>
+  <style>
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #16a7f5, #a6ddfa);
+            
+        }
+/* navbar style */
+
+/* Navbar container */
+.navbar {
+  width: 100%;
+  height: 70px;
+  background: #03045E; /* blue theme */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+/* Inner container for spacing and flex */
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+/* Brand / Logo */
+.navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Navbar links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-links li {
+  position: relative; /* for dropdowns */
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.nav-links a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+.nav-links a:visited,
+.nav-links a:active,
+.nav-links a:focus,
+.nav-apply:visited,
+.nav-apply:active,
+.nav-apply:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Different styles for Apply and Login */
+.nav-apply {
+  font-weight: bold;
+}
+
+
+
+/* Dropdown menu (optional if you want profile dropdown) */
+.nav-links li .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  color: #111;
+  min-width: 150px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.nav-links li:hover .dropdown-menu {
+  display: block;
+}
+
+.nav-links li .dropdown-menu li {
+  display: block;
+}
+
+.nav-links li .dropdown-menu li a {
+  color: #111;
+  padding: 10px 15px;
+}
+
+.nav-links li .dropdown-menu li a:hover {
+  background: #f3f4f6;
+}
+
+/* Search bar style */
+
+#search-text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+  width: 100%;
+}
+
+.job-result-wrapper {
+  width: min(100%, 760px);
+  margin: 42px auto;
+  padding: 0 18px;
+}
+
+.search-form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.search-form input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-form button {
+  padding: 12px 20px;
+  background: #3873fd;
+  color: white;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.search-form button:hover {
+  background: #285de4;
+}
+
+/* Job result wrapper */
+.job-result-wrapper {
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+/* Section title */
+.job-result-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Job card */
+.default-job-card {
+  background: white;
+  padding: 18px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+
+  /* animation */
+  animation: slideFromLeft 0.7s ease forwards;
+}
+
+/* Delay effect for each card */
+.default-job-card:nth-child(2) { animation-delay: 0.1s; }
+.default-job-card:nth-child(3) { animation-delay: 0.2s; }
+.default-job-card:nth-child(4) { animation-delay: 0.3s; }
+
+/* Slide animation */
+@keyframes slideFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.job-result-card:hover {
+  transform: translateY(-3px);
+}
+
+.job-result-card h3 {
+  color: #2563eb;
+  margin-bottom: 6px;
+}
+
+.job-result-card p {
+  color: #444;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+/* No job found text */
+.no-job-text {
+  text-align: center;
+  color: #444;
+  font-size: 16px;
+}
+
+
+
+/* Apply button */
+.apply-btn {
+  padding: 10px 28px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  background: #3873fd;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.apply-btn:hover {
+  background: #285de4;
+}
+
+@media (max-width: 768px) {
+  .job-result-wrapper {
+    margin: 24px auto;
+    padding: 0 14px;
+  }
+  .default-job-card {
+    padding: 16px;
+  }
+  .apply-btn {
+    width: 100%;
+  }
+  .job-result-card h3 {
+    font-size: 1.05rem;
+  }
+}
+
+/*footer*/
+.footer {
+  background: #1f2933;
+  color: #e5e7eb;
+  margin-top: 20rem;
+  padding-top: 40px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.footer-section p {
+  font-size: 14px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-section ul li a:hover {
+  color: #60a5fa;
+}
+
+.footer-bottom {
+  margin-top: 30px;
+  padding: 15px 0;
+  text-align: center;
+  background: #111827;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+
+    </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container"> 
+      <a class="navbar-brand" href="/">Job App</a>
+      <ul class="nav-links">
+        <li>
+          <a class="nav-apply" href="/">Home</a>
+        </li>
+        <li>
+          <a class="nav-apply" href="/applyjob">Browse Jobs</a>
+        </li>
+        <li>
+          <a class="nav-apply" href="/createjob">Post Job</a>
+        </li>
+        <!-- Chatbot moved to floating widget -->
+        <% if (user) { %>
+          <li class="dropdown">
+            <a class="nav-apply" href="/profilepage"><%= user.name %> ▾</a>
+            <ul class="dropdown-menu">
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li><a class="nav-apply" href="/loginpage">Login</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
+
+  <!--job result-->
+  <!-- Job results -->
+<div class="job-result-wrapper">
+
+  <div class="job-result-wrapper">
+
+  <% if (typeof q !== "undefined") { %>
+
+    <% if (jobs.length > 0) { %>
+
+      <h2 class="job-result-title">Your favourite job is here!!</h2>
+
+      <% jobs.forEach(job => { %>
+        <div class="default-job-card">
+          <h3><%= job.Name %></h3>
+          <p>Role: <%= job.Role %></p>
+          <p>Location: <%= job.Location %></p>
+          <div >
+    <form action="/applybutton" method="GET">
+      <input type="hidden" name="jobId" value="<%= job._id %>">
+      <button class="apply-btn" type="submit">Apply</button>
+    </form>
+  </div>
+        </div>
+      <% }) %>
+
+    <% } else { %>
+
+      <p class="no-job-text">
+        No jobs found for "<strong><%= q %></strong>"
+      </p>
+
+    <% } %>
+
+  <% } %>
+
+</div>
+
+  
+
+</div>
+
+<footer class="footer">
+  <div class="footer-container">
+
+    <div class="footer-section">
+      <h3>Job App</h3>
+      <p>Your trusted platform to search and apply for jobs easily.</p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/applyjob">Apply Jobs</a></li>
+        <li><a href="/loginpage">Login</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <p>Email: support@jobapp.com</p>
+      <p>Phone: +91 9971018840</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Job App | All Rights Reserved</p>
+  </div>
+</footer>
+
+  <%- include('partials/chat_widget') %>
+</body>
+</html>
