@@ -1,0 +1,318 @@
+<style>
+.chat-float-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:#0f5ca8;
+color:#fff;
+border:none;
+font-size:24px;
+cursor:pointer;
+z-index:9999;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.chat-panel{
+position:fixed;
+bottom:90px;
+right:20px;
+width:360px;
+height:500px;
+background:#fff;
+border-radius:15px;
+box-shadow:0 10px 40px rgba(0,0,0,.2);
+display:none;
+flex-direction:column;
+overflow:hidden;
+z-index:9999;
+}
+
+.chat-panel.open{
+display:flex;
+}
+
+.panel-header{
+background:#0f5ca8;
+color:#fff;
+padding:15px;
+font-weight:bold;
+}
+
+.panel-body{
+flex:1;
+overflow-y:auto;
+padding:15px;
+background:#f5f5f5;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.chat-message{
+padding:10px 15px;
+border-radius:10px;
+max-width:80%;
+}
+
+.chat-message.user{
+background:#0f5ca8;
+color:white;
+align-self:flex-end;
+}
+
+.chat-message.bot{
+background:#e8edf7;
+align-self:flex-start;
+}
+
+.panel-footer{
+display:flex;
+padding:10px;
+gap:10px;
+}
+
+.panel-footer input{
+flex:1;
+padding:10px;
+border-radius:20px;
+border:1px solid #ccc;
+}
+
+.panel-footer button{
+padding:10px 20px;
+background:#0f5ca8;
+color:white;
+border:none;
+border-radius:20px;
+cursor:pointer;
+}
+
+.chat-suggestions{
+padding:10px;
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+}
+
+.chat-suggestions button{
+padding:6px 10px;
+cursor:pointer;
+}
+.chat-job-card{
+
+background:white;
+
+padding:12px;
+
+margin-top:12px;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+.chat-job-card h4{
+
+margin-bottom:8px;
+
+color:#0f5ca8;
+
+}
+
+.chat-job-card p{
+
+margin:4px 0;
+
+}
+
+.apply-btn-chat{
+
+margin-top:10px;
+
+padding:8px 16px;
+
+background:#0f5ca8;
+
+color:white;
+
+border:none;
+
+border-radius:6px;
+
+cursor:pointer;
+
+}
+</style>
+
+<button id="chat-toggle" class="chat-float-btn">
+💬
+</button>
+
+<div id="chat-panel" class="chat-panel">
+
+<div class="panel-header">
+Job Assistant
+</div>
+
+<div id="chat-body" class="panel-body">
+</div>
+
+<div id="chat-suggestions" class="chat-suggestions">
+</div>
+
+<div class="panel-footer">
+
+<input
+id="chat-input"
+placeholder="Type a message...">
+
+<button id="chat-send">
+Send
+</button>
+
+</div>
+
+</div>
+
+<script>
+(() => {
+
+const API = "http://127.0.0.1:5001/chat";
+
+const toggle = document.getElementById("chat-toggle");
+const panel = document.getElementById("chat-panel");
+const body = document.getElementById("chat-body");
+const input = document.getElementById("chat-input");
+const send = document.getElementById("chat-send");
+const suggestions = document.getElementById("chat-suggestions");
+
+function addMessage(text, role){
+
+    const div = document.createElement("div");
+    div.className = "chat-message " + role;
+    div.innerText = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+}
+
+function showSuggestions(list){
+
+    suggestions.innerHTML="";
+
+    if(!Array.isArray(list)) return;
+
+    list.forEach(item=>{
+
+        const btn=document.createElement("button");
+
+        btn.innerText=item;
+
+        btn.onclick=()=>{
+
+            input.value=item;
+            input.focus();
+
+        };
+
+        suggestions.appendChild(btn);
+
+    });
+
+}
+
+async function sendMessage(message){
+
+    if(message===undefined || message===null) return;
+
+    addMessage(message || "👋","user");
+
+    input.value="";
+
+    const loading=document.createElement("div");
+    loading.className="chat-message bot";
+    loading.innerText="Typing...";
+    body.appendChild(loading);
+    body.scrollTop=body.scrollHeight;
+
+    try{
+
+        const response=await fetch(API,{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                message:message
+            })
+
+        });
+
+        loading.remove();
+
+        if(!response.ok){
+
+            addMessage("Server Error","bot");
+            return;
+
+        }
+
+        const data=await response.json();
+
+        addMessage(data.reply || "No response","bot");
+
+        showSuggestions(data.suggestions || []);
+
+    }
+    catch(err){
+
+        console.log(err);
+
+        loading.remove();
+
+        addMessage("Unable to connect to chatbot.","bot");
+
+    }
+
+}
+
+toggle.onclick=()=>{
+
+    panel.classList.toggle("open");
+
+    if(body.children.length===0){
+
+        sendMessage("");
+
+    }
+
+};
+
+send.onclick=()=>{
+
+    sendMessage(input.value.trim());
+
+};
+
+input.addEventListener("keydown",e=>{
+
+    if(e.key==="Enter"){
+
+        e.preventDefault();
+
+        sendMessage(input.value.trim());
+
+    }
+
+});
+
+})();
+</script>

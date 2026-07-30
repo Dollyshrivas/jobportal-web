@@ -1,0 +1,63 @@
+<!-- Shared head partial: fonts and base UI styles -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7fafc;
+    --nav:#0b2545;
+    --accent:#2563eb;
+    --muted:#6b7280;
+    --card:#ffffff;
+    --radius:12px;
+    --shadow: 0 10px 30px rgba(2,6,23,0.08);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:Inter, 'Segoe UI', Arial, sans-serif;background:var(--bg);color:#0f172a;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+  a{color:inherit}
+  .navbar-brand{display:flex;align-items:center;gap:10px}
+  .brand-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#4f46e5);display:inline-block}
+  .brand-text{color:#fff;font-weight:700;font-size:1.05rem}
+
+  /* Buttons */
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:none;cursor:pointer}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-ghost{background:transparent;border:1px solid rgba(15,23,42,0.04)}
+
+  /* Inputs */
+  input[type=text], input[type=email], input[type=password], textarea{
+    border:1px solid #e6eefc;padding:10px 12px;border-radius:10px;background:#fff;outline:none;width:100%;
+  }
+  input:focus, textarea:focus{box-shadow:0 6px 18px rgba(37,99,235,0.12);border-color:var(--accent)}
+
+  /* Cards */
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+
+  /* small helpers */
+  .muted{color:var(--muted)}
+  .text-md{font-size:0.95rem}
+
+  img, video, picture, svg { max-width: 100%; height: auto; display: block; }
+  .full-width { width: 100%; max-width: 100%; }
+  .page-content, .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 18px; }
+
+  @media (max-width: 768px) {
+    .nav-container { flex-wrap: wrap; flex-direction: column; align-items: flex-start; gap: 14px; padding: 14px 18px; }
+    .navbar-brand { width: 100%; }
+    .nav-links { width: 100%; justify-content: flex-start; flex-wrap: wrap; flex-direction: column; gap: 10px; }
+    .nav-links li { width: 100%; }
+    .nav-links a { width: 100%; box-sizing: border-box; }
+    .nav-links .dropdown-menu { position: static; width: 100%; box-shadow: none; border: none; background: transparent; }
+    .btn, .apply-btn, .login-btn, .register-btn, .reset-btn { width: 100%; max-width: 100%; }
+    .search-form, .chat-form { flex-direction: column; align-items: stretch; }
+    .search-form input, .search-form button, .chat-input { width: 100%; }
+  }
+
+  /* subtle hover interactions */
+  .hover-lift:hover{transform:translateY(-4px);transition:transform 220ms ease}
+</style>
+  <%- include('responsive_head') %>
